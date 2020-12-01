@@ -1,20 +1,23 @@
-data_file = open('../Data/Day1.txt')
-data_list = [int(i) for i in data_file.read().splitlines()]
+import pytest
 
-def Part1():
+data_file = open('../Data/Day1.txt')
+data = [int(i) for i in data_file.read().splitlines()]
+
+def SolvePart1(data_list) -> int:
     for i in data_list:
         for j in data_list:
             if (i + j) == 2020:
-                print(i * j)
-                return;
+                return i * j;
 
-def Part2():
+def SolvePart2(data_list) -> int:
     for i in data_list:
         for j in data_list:
             for k in data_list:
                 if (i + j + k) == 2020:
-                    print(i * j * k)
-                    return;
+                    return i * j * k;
 
-Part1()
-Part2()
+def test_example_solution():
+    assert SolvePart1([1721,979,366,299,675,1456]) == 514579
+
+print(SolvePart1(data))
+print(SolvePart2(data))
