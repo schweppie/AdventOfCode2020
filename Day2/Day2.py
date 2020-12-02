@@ -6,43 +6,42 @@ data_lines = [str(i) for i in data_file.read().splitlines()]
 
 def SolvePart1(data_lines: str) -> int:
     passwords = 0
-
     for line in data_lines:
-        match = re.search("(\d+)-(\d+) ([a-z]): (\w+)", line)
-
-        min = int(match.group(1))
-        max = int(match.group(2))
-        character = match.group(3)
-        password = match.group(4)
-
+        min, max, character, password = GetPasswordData(line)
         count = CharacterCountInString(character, password)
         if count >= min and count <= max:
             passwords = passwords + 1
-
     return passwords;
 
-def CharacterCountInString(character, string):
+def SolvePart2(data_lines: str) -> int:
+    passwords = 0
+    for line in data_lines:
+        min, max, character, password = GetPasswordData(line)
+        if IsPasswordValid(min-1, max-1, character, password):
+            passwords = passwords + 1
+    return passwords;
+
+def IsPasswordValid(min, max, character, password) -> bool:
+    if password[min] == character and password[max] != character:
+        return True
+    if password[min] != character and password[max] == character:
+        return True
+    return False
+
+def CharacterCountInString(character, string) -> int:
     count = 0
     for char in string:
         if char is character:
             count = count + 1
     return count
 
-def SolvePart2(data_lines: str) -> int:
-    passwords = 0
-
-    for line in data_lines:
-        match = re.search("(\d+)-(\d+) ([a-z]): (\w+)", line)
-
-        min = int(match.group(1)) - 1
-        max = int(match.group(2)) - 1
-        character = match.group(3)
-        password = match.group(4)
-
-        if password[min] == character and password[max] != character or password[min] != character and password[max] == character:
-            passwords = passwords + 1
-
-    return passwords;
+def GetPasswordData(line: str):
+    match = re.search(r'(\d+)-(\d+) ([a-z]): (\w+)', line)
+    min = int(match.group(1))
+    max = int(match.group(2))
+    character = match.group(3)
+    password = match.group(4)
+    return min, max, character, password
 
 def test_example_part1():
     assert SolvePart1(["1-3 a: abcde","1-3 b: cdefg","2-9 c: ccccccccc"]) == 2
