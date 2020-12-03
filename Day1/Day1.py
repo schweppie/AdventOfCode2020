@@ -1,18 +1,18 @@
 import pytest
 
-data_file = open('../Data/Day1.txt')
-data = [int(i) for i in data_file.read().splitlines()]
+dataFile = open('../Data/Day1.txt')
+data = [int(i) for i in dataFile.read().splitlines()]
 
-def SolvePart1(data_list) -> int:
-    for i in data_list:
-        for j in data_list:
+def SolvePart1(dataList) -> int:
+    for i in dataList:
+        for j in dataList:
             if (i + j) == 2020:
                 return i * j;
 
-def SolvePart2(data_list) -> int:
-    for i in data_list:
-        for j in data_list:
-            for k in data_list:
+def SolvePart2(dataList) -> int:
+    for i in dataList:
+        for j in dataList:
+            for k in dataList:
                 if (i + j + k) == 2020:
                     return i * j * k;
 

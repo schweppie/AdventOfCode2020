@@ -1,30 +1,30 @@
 import pytest
 import re
 
-data_file = open('../Data/Day2.txt')
-data_lines = [str(i) for i in data_file.read().splitlines()]
+dataFile = open('../Data/Day2.txt')
+dataLines = [str(i) for i in data_file.read().splitlines()]
 
-def SolvePart1(data_lines: str) -> int:
+def SolvePart1(dataLines: str) -> int:
     passwords = 0
-    for line in data_lines:
+    for line in dataLines:
         min, max, character, password = GetPasswordData(line)
         count = CharacterCountInString(character, password)
         if count >= min and count <= max:
             passwords = passwords + 1
     return passwords;
 
-def SolvePart2(data_lines: str) -> int:
+def SolvePart2(dataLines: str) -> int:
     passwords = 0
-    for line in data_lines:
+    for line in dataLines:
         min, max, character, password = GetPasswordData(line)
         if IsPasswordValid(min-1, max-1, character, password):
             passwords = passwords + 1
     return passwords;
 
-def IsPasswordValid(min, max, character, password) -> bool:
-    if password[min] == character and password[max] != character:
+def IsPasswordValid(firstIndex, secondIndex, character, password) -> bool:
+    if password[firstIndex] == character and password[secondIndex] != character:
         return True
-    if password[min] != character and password[max] == character:
+    if password[firstIndex] != character and password[secondIndex] == character:
         return True
     return False
 
