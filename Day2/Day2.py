@@ -11,7 +11,7 @@ def SolvePart1(dataLines: str) -> int:
         count = CharacterCountInString(character, password)
         if count >= min and count <= max:
             passwords = passwords + 1
-    return passwords;
+    return passwords
 
 def SolvePart2(dataLines: str) -> int:
     passwords = 0
@@ -19,7 +19,7 @@ def SolvePart2(dataLines: str) -> int:
         min, max, character, password = GetPasswordData(line)
         if IsPasswordValid(min-1, max-1, character, password):
             passwords = passwords + 1
-    return passwords;
+    return passwords
 
 def IsPasswordValid(firstIndex, secondIndex, character, password) -> bool:
     if password[firstIndex] == character and password[secondIndex] != character:
@@ -36,6 +36,11 @@ def CharacterCountInString(character, string) -> int:
     return count
 
 def GetPasswordData(line: str):
+    # RegEx Format for '8-9 l: lzllllldsl'
+    # First number   (\d+)-
+    # Second number        (\d+)
+    # Character                 ([a-z]):
+    # Password                           (\w+)
     match = re.search(r'(\d+)-(\d+) ([a-z]): (\w+)', line)
     min = int(match.group(1))
     max = int(match.group(2))

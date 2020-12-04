@@ -7,14 +7,14 @@ def SolvePart1(dataList) -> int:
     for i in dataList:
         for j in dataList:
             if (i + j) == 2020:
-                return i * j;
+                return i * j
 
 def SolvePart2(dataList) -> int:
     for i in dataList:
         for j in dataList:
             for k in dataList:
                 if (i + j + k) == 2020:
-                    return i * j * k;
+                    return i * j * k
 
 def test_example_part1():
     assert SolvePart1([1721,979,366,299,675,1456]) == 514579
