@@ -20,9 +20,8 @@ def SolvePart2(dataLines: str) -> int:
         validations = 0
         for validation in validationTable:
             matches = re.search(validation[0], password)
-            if matches:
-                if len(matches.groups()) == validation[1]:
-                    validations = validations + 1
+            if matches and len(matches.groups()) == validation[1]:
+                validations = validations + 1
         if validations == len(validationTable):
             validPasswords = validPasswords + 1
     return validPasswords
