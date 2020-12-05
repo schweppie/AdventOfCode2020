@@ -2,7 +2,7 @@ import pytest
 import re
 
 dataFile = open('../Data/Day2.txt')
-dataLines = [str(i) for i in data_file.read().splitlines()]
+dataLines = [str(i) for i in dataFile.read().splitlines()]
 
 def SolvePart1(dataLines: str) -> int:
     passwords = 0
@@ -54,5 +54,5 @@ def test_example_part1():
 def test_example_part2():
     assert SolvePart2(["1-3 a: abcde","1-3 b: cdefg","2-9 c: ccccccccc"]) == 1
 
-print (SolvePart1(data_lines))
-print (SolvePart2(data_lines))
+print (SolvePart1(dataLines))
+print (SolvePart2(dataLines))

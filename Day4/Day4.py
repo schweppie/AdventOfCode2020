@@ -1,4 +1,3 @@
-import pytest
 import re
 
 dataFile = open('../Data/Day4.txt')
