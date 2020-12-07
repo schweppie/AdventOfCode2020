@@ -36,24 +36,22 @@ def GetBagContents(data: str, contents: []) -> []:
 def GetAmountOfGoldBagsOf(bagType: str, amount: int) -> int:
     if bagType == "shiny gold":
         amount = amount + 1
-    bagContents = bagDict[bagType]
-    if len(bagContents) == 0: return amount
-    for bag in bagContents:
-        if bag[1] in bagContainingGoldDict:
-            amount += bagContainingGoldDict[bag[1]] * bag[0]
-        else:
-            amount += GetAmountOfGoldBagsOf(bag[1], 0) * bag[0]
+    amount += FindAmountIn(bagType, bagContainingGoldDict, GetAmountOfGoldBagsOf)
     return amount
 
 def GetAmountOfBagsIn(bagType: str, amount: int) -> int:
     amount = amount + 1
+    amount += FindAmountIn(bagType, bagContainingBagsDict, GetAmountOfBagsIn)
+    return amount
+
+def FindAmountIn(bagType: str, dataDict: {}, amountOfBagsDelegate) -> int:
+    amount = 0
     bagContents = bagDict[bagType]
-    if len(bagContents) == 0: return amount
-    for bag in bagContents:
-        if bag[1] in bagContainingBagsDict:
-            amount += bagContainingBagsDict[bag[1]] * bag[0]
+    for bagData in bagContents:
+        if bagData[1] in dataDict:
+            amount += dataDict[bagData[1]] * bagData[0]
         else:
-            amount += GetAmountOfBagsIn(bag[1], 0) * bag[0]
+            amount += amountOfBagsDelegate(bagData[1], 0) * bagData[0]
     return amount
 
 def SolvePart2(dataLines: str) -> int:
