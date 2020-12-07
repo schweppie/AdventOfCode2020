@@ -6,6 +6,7 @@ dataLines = [str(i) for i in dataFile.read().splitlines()]
 bagDict = {}
 bagContainingGoldDict = {}
 bagContainingBagsDict = {}
+shinyGoldKey = 'shiny gold'
 
 def PopulateBagDict():
     for i in range(len(dataLines)):
@@ -13,16 +14,6 @@ def PopulateBagDict():
         bagColor = re.match(r'(^\w+ \w+)', line).group(0)
         dataLines[i] = re.sub(r'(^\w+ \w+)( \w+ \w+)', '', line)
         bagDict[bagColor] = GetBagContents(dataLines[i], [])
-
-def SolvePart1(dataLines: str) -> int:
-    for bag in bagDict:
-        bagContainingGoldDict[bag] = GetAmountOfGoldBagsOf(bag, 0)
-    bagContainingGoldDict['shiny gold'] = 0
-    amountOfBagsContainingGold = 0
-    for bag in bagContainingGoldDict:
-        if bagContainingGoldDict.get(bag) > 0:
-            amountOfBagsContainingGold = amountOfBagsContainingGold + 1
-    return amountOfBagsContainingGold
 
 def GetBagContents(data: str, contents: []) -> []:
     if len(data) == 0: return contents
@@ -34,15 +25,12 @@ def GetBagContents(data: str, contents: []) -> []:
     return GetBagContents(data, contents)
 
 def GetAmountOfGoldBagsOf(bagType: str, amount: int) -> int:
-    if bagType == "shiny gold":
+    if bagType == shinyGoldKey:
         amount = amount + 1
-    amount += FindAmountIn(bagType, bagContainingGoldDict, GetAmountOfGoldBagsOf)
-    return amount
+    return amount + FindAmountIn(bagType, bagContainingGoldDict, GetAmountOfGoldBagsOf)
 
 def GetAmountOfBagsIn(bagType: str, amount: int) -> int:
-    amount = amount + 1
-    amount += FindAmountIn(bagType, bagContainingBagsDict, GetAmountOfBagsIn)
-    return amount
+    return amount + FindAmountIn(bagType, bagContainingBagsDict, GetAmountOfBagsIn) + 1
 
 def FindAmountIn(bagType: str, dataDict: {}, amountOfBagsDelegate) -> int:
     amount = 0
@@ -54,10 +42,20 @@ def FindAmountIn(bagType: str, dataDict: {}, amountOfBagsDelegate) -> int:
             amount += amountOfBagsDelegate(bagData[1], 0) * bagData[0]
     return amount
 
+def SolvePart1(dataLines: str) -> int:
+    for bag in bagDict:
+        bagContainingGoldDict[bag] = GetAmountOfGoldBagsOf(bag, 0)
+    bagContainingGoldDict[shinyGoldKey] = 0
+    amountOfBagsContainingGold = 0
+    for bag in bagContainingGoldDict:
+        if bagContainingGoldDict.get(bag) > 0:
+            amountOfBagsContainingGold = amountOfBagsContainingGold + 1
+    return amountOfBagsContainingGold
+
 def SolvePart2(dataLines: str) -> int:
     for bag in bagDict:
         bagContainingBagsDict[bag] = GetAmountOfBagsIn(bag, 0)
-    return bagContainingBagsDict['shiny gold'] - 1 # minus one, don't count self
+    return bagContainingBagsDict[shinyGoldKey] - 1 # minus one, don't count self
 
 PopulateBagDict()
 print (SolvePart1(dataLines))
