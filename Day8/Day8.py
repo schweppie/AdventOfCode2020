@@ -9,14 +9,12 @@ accumulator = 0
 def SolvePart1(dataLines: str) -> int:
     passedInstructionsDict = {}
     instructions = GetInstructions(dataLines)
-    while True:
-        if index in passedInstructionsDict:
-            return accumulator
+    while index not in passedInstructionsDict:
         passedInstructionsDict[index] = passedInstructionsDict.get(index, 0) + 1
         instruction = instructions[index]
         method = eval(instruction[0])
         method(instruction[1])
-    return 0
+    return accumulator
 
 def GetOutputOf(instructions: []) -> []: # returns [ succes, accumulator]
     global index
@@ -24,16 +22,14 @@ def GetOutputOf(instructions: []) -> []: # returns [ succes, accumulator]
     index = 0
     accumulator = 0
     passedInstructionsDict = {}
-    while True:
-        if index >= len(instructions):
-            return [True, accumulator]
+    while index < len(instructions):
         passedInstructionsDict[index] = passedInstructionsDict.get(index, 0) + 1
-        if passedInstructionsDict[index] > 100:
+        if passedInstructionsDict[index] > 1:
             return [False, 0]
         instruction = instructions[index]
         method = eval(instruction[0])
         method(instruction[1])
-    return [False, 0]
+    return [True, accumulator]
 
 def nop(amount: int):
     global index
@@ -68,12 +64,10 @@ def PopulateInstructionSolutions(dataLines: str) -> []:
     instructionListCollection = []
     for i in range(len(dataLines)):
         match = re.match(r'(\w+) ([-+]\d+)', dataLines[i])
-
         if match.group(1) == "nop":
             instructionList = GetInstructions(dataLines)
             instructionList[i][0] = "jmp"
             instructionListCollection.append(instructionList)
-
         if match.group(1) == "jmp":
             instructionList = GetInstructions(dataLines)
             instructionList[i][0] = "nop"
